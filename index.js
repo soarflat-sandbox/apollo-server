@@ -1,6 +1,6 @@
 const { ApolloServer, gql } = require('apollo-server');
 
-// クライアントからのリクエストに対してレスポンスするデータ
+// リクエストされた GraphQL クエリに対してレスポンスするデータ
 const books = [
   {
     title: 'JavaScript: The Definitive Guide, 7th Edition',
@@ -23,7 +23,7 @@ const typeDefs = gql`
   String は GraphQL に組み込まれている「スカラー型」という種類の型であり、
   名前の通り文字列型（UTF-8文字シーケンス）。
   String! のように「!」は Null でないことを保証する。
-  そのため、どのようなリクエストに対しても、常に文字列の値を返すことを保証している。
+  そのため、どのような要求に対しても、常に文字列の値を返すことを保証している。
   """
   type Book {
     title: String!
@@ -31,9 +31,9 @@ const typeDefs = gql`
   }
 
   """
-  Query はデータ取得系のクエリである query のために予約された型で、全ての query のルートとなる型。
-  クライアントからリクエストできる query をここのフィールドに定義する。
-  今回の場合、以下のような query をリクエストできる。
+  Query はデータ取得系の Operation である query のために予約された型であり、全ての query のルートとなる型。
+  GraphQL API に要求できる query をここのフィールドに定義する。
+  今回の定義では、以下のようなフィールドを要求できるようになる。
   query {
     books {
       title
@@ -47,9 +47,8 @@ const typeDefs = gql`
 `;
 
 // リゾルバ（redolver）
-// リゾルバはクエリに対して、対応するデータを返す関数。
-// 今回、type Query が books というフィールドを持っているので、
-// books という query に応じたデータを返す関数を定義している。
+// リゾルバはクエリに応じたデータを返す関数。
+// 「type Query の books フィールドを要求するクエリ」に応じたデータを返す関数を定義している。
 const resolvers = {
   Query: {
     books: () => books
